@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			url: 'https://playground.4geeks.com/contact'
 		},
 		actions: {
+			selectContact :  (contact) => setStore({selected: contact}),
 			createAgenda: async ()=> {
 				try {
 					const resp = await fetch(getStore().url+'/agendas/alexis',{
@@ -20,7 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					
 				}
 			},
-			getAgenda: async ()=>{
+			getAgenda: async ()=> {
 				try {
 					const resp = await fetch(getStore().url+'/agendas/alexis')
 					if (resp.status===404) return getActions().createAgenda()
@@ -29,14 +30,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({contacts: data.contacts})
 				} catch (error) {
 					console.error(error);
-					
-					
 				}
 				
 			},
 			createContact: async(contact)=>{
 			try {
-					const resp = await fetch(getStore().url+'/angedas/alexis/contacts',{
+					const resp = await fetch(getStore().url+'/agendas/alexis/contacts',{
 						method:'POST',
 						headers: {
 							'Content-Type' : 'application/json'
@@ -44,7 +43,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body:JSON.stringify(contact)
 					})
 					if (!resp.ok) throw new Error('Error while creating contanct')
-					const data = await resp.json()
+					return getActions().getAgenda()
 					console.log(data)
 				} catch (error) {
 					console.error(error);
@@ -53,9 +52,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}},
 			editContact: async(contact)=>{
 			try {
-					const resp = await fetch(getStore().url+'')
+					const resp = await fetch(getStore().url+'/agendas/alexis/contacts/'+contact.id,{
+						method:'PUT',
+						headers: {
+							'Content-Type' : 'application/json'
+						},
+						body: JSON.stringify(contact)
+					})
 					if (!resp.ok) throw new Error('Error while')
-					const data = await resp.json()
+					getActions().getAgenda()
 				} catch (error) {
 					console.error(error);
 					
@@ -63,9 +68,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}},
 			deleteContact:async(id)=>{
 			try {
-					const resp = await fetch(getStore().url+'')
-					if (!resp.ok) throw new Error('Error while')
-					const data = await resp.json()
+					const resp = await fetch(getStore().url+'/agendas/alexis/contacts/'+id,{
+						method: 'DELETE',
+						
+					})
+					if (!resp.ok) throw new Error('Error while deleting')
+					return getActions().getAgenda()
 				} catch (error) {
 					console.error(error);
 					

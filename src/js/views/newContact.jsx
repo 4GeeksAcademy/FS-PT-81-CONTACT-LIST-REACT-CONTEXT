@@ -6,7 +6,7 @@ export const NewContact= () =>{
 
 
     return(
-        <div classNaame="container">
+        <div className="container">
        <NewContactForm />
         </div>
 
