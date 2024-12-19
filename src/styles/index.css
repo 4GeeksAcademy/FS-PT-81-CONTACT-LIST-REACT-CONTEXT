@@ -1,3 +1,13 @@
 /* 
     General Styles
-*/
+*/.nav-link-underline-primary {
+    text-decoration: none; 
+    color: #007bff; 
+    transition: text-decoration 0.2s ease-in-out; 
+  }
+  
+  .nav-link-underline-primary:hover {
+    text-decoration: underline; 
+    text-decoration-color: #007bff; 
+  }
+  
